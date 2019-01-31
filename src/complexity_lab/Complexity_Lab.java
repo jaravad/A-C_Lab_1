@@ -19,27 +19,55 @@ public class Complexity_Lab {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        BigInteger bigInteger = new BigInteger("99999999999999999999999999999999999999");// uper limit
-        BigInteger min = new BigInteger("10000000000000000000000000000000000000");// lower limit
+        Scanner s = new Scanner(System.in);
+        System.out.println("Digite n");
+        int m = s.nextInt();
+        System.out.println("Digite número de campos");
+        int n = s.nextInt();
+        int i = 0;
+        BigInteger[][] mat = new BigInteger[m][n];
+        BigInteger big;
+        mat[i][0] = GenRandom("9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999", "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+        System.out.println(mat[i][0]);
+        i += 1;
+        while (i < m) {
+            big = GenRandom("9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999", "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+            if (!Exists(mat, big, i)) {
+                mat[i][0] = big;
+                System.out.println(mat[i][0]);
+                i += 1;
+            }
+        }
+
+    }
+
+    public static BigInteger GenRandom(String up, String low) {
+        BigInteger bigInteger = new BigInteger(up);// uper limit
+        BigInteger min = new BigInteger(low);// lower limit
         BigInteger bigInteger1 = bigInteger.subtract(min);
         Random rnd = new Random();
         int maxNumBitLength = bigInteger.bitLength();
-
         BigInteger aRandomBigInt;
-        Scanner s = new Scanner(System.in);
-        System.out.println("Digite n");
-        int n = s.nextInt();
-        for (int i = 0; i < n; i++) {
-            aRandomBigInt = new BigInteger(maxNumBitLength, rnd);
-            if (aRandomBigInt.compareTo(min) < 0) {
-                aRandomBigInt = aRandomBigInt.add(min);
-            }
-            if (aRandomBigInt.compareTo(bigInteger) >= 0) {
-                aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
-            }
-
-            System.out.println(aRandomBigInt);
+        aRandomBigInt = new BigInteger(maxNumBitLength, rnd);
+        if (aRandomBigInt.compareTo(min) < 0) {
+            aRandomBigInt = aRandomBigInt.add(min);
         }
+        if (aRandomBigInt.compareTo(bigInteger) >= 0) {
+            aRandomBigInt = aRandomBigInt.mod(bigInteger1).add(min);
+        }
+
+        return aRandomBigInt;
+
+    }
+
+    public static boolean Exists(BigInteger[][] mat, BigInteger num, int i) {
+        boolean sw = false;
+        for (int j = 0; j < i; j++) {
+            if (mat[j][0].compareTo(num) == 0) {
+                sw = true;
+            }
+        }
+        return sw;
     }
 
 }
