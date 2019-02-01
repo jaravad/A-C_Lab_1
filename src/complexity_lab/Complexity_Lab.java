@@ -25,19 +25,59 @@ public class Complexity_Lab {
         System.out.println("Digite número de campos");
         int n = s.nextInt();
         int i = 0;
-        BigInteger[][] mat = new BigInteger[m][n];
-        BigInteger big;
-        mat[i][0] = GenRandom("9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999", "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        System.out.println(mat[i][0]);
+        Object[][] mat = new Object[m][n];
+        BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
+        for (int j = 0; j < n; j++) {
+            System.out.println("Campo " + j);
+            System.out.println("Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
+            int type = s.nextInt();
+            switch (type) {
+                case 0:
+                    for (int k = 0; k < m; k++) {
+
+                        mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(5)).subtract(one)), String.valueOf(one.multiply(ten.pow(4))));
+
+                    }
+                    ;
+                    break;
+                case 1:  ;
+                    
+                    break;
+                default:
+                    System.out.println("Tipo inválido");
+                    ;
+                    break;
+            }
+        }
+
+        //System.out.println(generatePswd(50));
+        mat[i][0] = GenRandom(String.valueOf(one.multiply(ten.pow(5)).subtract(one)), String.valueOf(one.multiply(ten.pow(4))));
+        System.out.println(mat[i][0] + " " + mat[i][1]);
         i += 1;
         while (i < m) {
-            big = GenRandom("9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999", "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+            big = GenRandom(String.valueOf(one.multiply(ten.pow(5)).subtract(one)), String.valueOf(one.multiply(ten.pow(4))));
             if (!Exists(mat, big, i)) {
                 mat[i][0] = big;
-                System.out.println(mat[i][0]);
+                System.out.println(mat[i][0] + " " + mat[i][1]);
                 i += 1;
             }
         }
+
+    }
+
+    static char[] generatePswd(int len) {
+        String charsCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String Chars = "abcdefghijklmnopqrstuvwxyz";
+        String nums = "0123456789";
+        String symbols = "!@#$%^&*()_+-=.,/';:?><~*/-+";
+        String passSymbols = charsCaps + Chars + nums + symbols;
+        Random rnd = new Random();
+        char[] password = new char[len];
+
+        for (int i = 0; i < len; i++) {
+            password[i] = passSymbols.charAt(rnd.nextInt(passSymbols.length()));
+        }
+        return password;
 
     }
 
@@ -60,10 +100,11 @@ public class Complexity_Lab {
 
     }
 
-    public static boolean Exists(BigInteger[][] mat, BigInteger num, int i) {
+    public static boolean Exists(Object[][] mat, BigInteger num, int i) {
         boolean sw = false;
         for (int j = 0; j < i; j++) {
-            if (mat[j][0].compareTo(num) == 0) {
+            BigInteger aux = new BigInteger(String.valueOf(mat[j][0]));
+            if (aux.compareTo(num) == 0) {
                 sw = true;
             }
         }
