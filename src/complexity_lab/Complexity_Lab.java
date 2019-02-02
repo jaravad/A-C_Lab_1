@@ -27,7 +27,7 @@ public class Complexity_Lab {
         int n = s.nextInt();
         int i = 0;
         Object[][] mat = new Object[m][n + 1];
-        
+
         BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
 
         for (int j = 1; j <= n; j++) {
@@ -41,13 +41,13 @@ public class Complexity_Lab {
                     for (int k = 0; k < m; k++) {
                         mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(len)).subtract(one)), String.valueOf(one.multiply(ten.pow(len - 1))));
                     }
-                    
+
                     break;
                 case 1:  ;
                     for (int k = 0; k < m; k++) {
                         mat[k][j] = generateRandomText(len).substring(0, len);
                     }
-                    
+
                     break;
                 default:
                     System.out.println("Tipo inválido, se tomará como numérico");
@@ -55,7 +55,7 @@ public class Complexity_Lab {
                     for (int k = 0; k < m; k++) {
                         mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(len)).subtract(one)), String.valueOf(one.multiply(ten.pow(len - 1))));
                     }
-                    
+
                     break;
             }
         }
@@ -96,6 +96,27 @@ public class Complexity_Lab {
             }
 
         }
+        sw = false;
+        while (sw == false) {
+            System.out.println("Digite número de campo para obtener valor máximo o mínimo");
+            int num = s.nextInt();
+            System.out.println("Digite que desea obtener; 0 = valor mínimo, 1 = valor máximo");
+            int op = s.nextInt();
+            if (num <= n && op < 2) {
+                sw = true;
+                switch (op){
+                    case 0:
+                        MinValue(mat, num);
+                        break;
+                    case 1:
+                        MaxValue(mat, num);
+                }
+            } else if (num > n) {
+                System.out.println("☹ Campo inválido, intente de nuevo");
+            } else if (op >= 2) {
+                System.out.println("☹ Opción inválida");
+            }
+        }
 
     }
 
@@ -125,7 +146,7 @@ public class Complexity_Lab {
     public static void Sort(Object[][] mat, int m, int n) {
         Object aux;
         for (int i = 0; i < m - 1; i++) {
-            for (int j = 1; j < m; j++) {
+            for (int j = i + 1; j < m; j++) {
                 BigInteger a = new BigInteger(String.valueOf(mat[i][0]));
                 BigInteger b = new BigInteger(String.valueOf(mat[j][0]));
                 if (a.compareTo(b) > 0) {
@@ -182,6 +203,40 @@ public class Complexity_Lab {
             }
         }
         return sw;
+    }
+
+    public static void MaxValue(Object[][] mat, int n) {
+        try{
+            
+            BigInteger max = new BigInteger(String.valueOf(mat[0][n]));
+            for (int i = 1; i < mat.length; i++) {
+                BigInteger b = new BigInteger(String.valueOf(mat[i][n]));
+                if (b.compareTo(max)>0) {
+                    max = b;
+                }
+            }
+            System.out.println("Valor máximo del campo "+n);
+            System.out.println(max);
+        }catch(NumberFormatException e){
+            System.out.println("El campo es alfanumérico");
+        }
+    }
+    
+    public static void MinValue(Object[][] mat, int n){
+        try{
+            
+            BigInteger min = new BigInteger(String.valueOf(mat[0][n]));
+            for (int i = 1; i < mat.length; i++) {
+                BigInteger b = new BigInteger(String.valueOf(mat[i][n]));
+                if (b.compareTo(min)<0) {
+                    min = b;
+                }
+            }
+            System.out.println("Valor mínimo del campo "+n);
+            System.out.println(min);
+        }catch(NumberFormatException e){
+            System.out.println("El campo es alfanumérico");
+        }
     }
 
 }
