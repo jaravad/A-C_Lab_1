@@ -25,13 +25,11 @@ public class Complexity_Lab {
         int m = s.nextInt();
         System.out.println("Digite número de campos (adicionales al campo llave)");
         int n = s.nextInt();
-        int i = 0,l=0;
+        int i = 0;
         Object[][] mat = new Object[m][n + 1];
-        int []types = new int [n+1];
-        types[l]=0;
-        l+=1;
-        BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
         
+        BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
+
         for (int j = 1; j <= n; j++) {
             System.out.println("➥ Campo " + j);
             System.out.println("↳ Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
@@ -43,28 +41,25 @@ public class Complexity_Lab {
                     for (int k = 0; k < m; k++) {
                         mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(len)).subtract(one)), String.valueOf(one.multiply(ten.pow(len - 1))));
                     }
-                    types[l] = 0;
-                    l+=1;
+                    
                     break;
                 case 1:  ;
                     for (int k = 0; k < m; k++) {
-                        mat[k][j] = generateRandomText(len);
+                        mat[k][j] = generateRandomText(len).substring(0, len);
                     }
-                    types[l] = 1;
-                    l+=1;
+                    
                     break;
                 default:
                     System.out.println("Tipo inválido, se tomará como numérico");
+                    type = 0;
                     for (int k = 0; k < m; k++) {
                         mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(len)).subtract(one)), String.valueOf(one.multiply(ten.pow(len - 1))));
                     }
-                    types[l] = 0;
-                    l+=1;
+                    
                     break;
             }
         }
-        
-        
+
         mat[i][0] = GenRandom(String.valueOf(one.multiply(ten.pow(50)).subtract(one)), String.valueOf(one.multiply(ten.pow(49))));
         ShowRow(mat, i, n);
         i += 1;
@@ -76,11 +71,53 @@ public class Complexity_Lab {
                 i += 1;
             }
         }
-        
+
         Sort(mat, m, n);
         System.out.println("Matriz Ordenada");
         for (int t = 0; t < m; t++) {
             ShowRow(mat, t, n);
+        }
+//        for (int j = 0; j < l; j++) {
+//            System.out.print(types[j]+" ");
+//        }
+//        System.out.println("");
+        boolean sw = false;
+        while (sw == false) {
+            System.out.println("Digite número de campo para buscar (0 = Campo clave)");
+            int num = s.nextInt();
+            if (num <= n) {
+                sw = true;
+                System.out.println("Digite dato a buscar");
+                Scanner ss = new Scanner(System.in);
+                String dat = ss.nextLine();
+                Search(dat, mat, num);
+            } else {
+                System.out.println("☹ Campo inválido, intente de nuevo");;
+            }
+
+        }
+
+    }
+
+    public static void Search(String dat, Object[][] mat, int num) {
+
+        boolean sw = false;
+        for (int j = 0; j < mat.length; j++) {
+            if (dat.equals(String.valueOf(mat[j][num]))) {
+                sw = true;
+                if (num == 0) {
+                    System.out.println("«Llave encontrada»");
+                } else {
+                    System.out.println("Dato encontrado en el registro: " + mat[j][0]);
+                }
+                System.out.println("⇝Registro: ");
+                ShowRow(mat, j, mat[j].length - 1);
+                break;
+            }
+        }
+        if (sw == false) {
+            System.out.println("Dato no encontrado");
+
         }
 
     }
@@ -100,12 +137,13 @@ public class Complexity_Lab {
                 }
             }
         }
-        
+
     }
 
     public static void ShowRow(Object[][] mat, int i, int n) {
+        System.out.print("」");
         for (int j = 0; j <= n; j++) {
-            System.out.print(mat[i][j] + " ");
+            System.out.print(mat[i][j] + " ┊ ");
         }
         System.out.println("");
     }
