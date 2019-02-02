@@ -8,6 +8,9 @@ package complexity_lab;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -254,7 +257,12 @@ public class Complexity_Lab {
             }
             System.out.println("Valor máximo del campo " + n + ": " + max);
         } catch (NumberFormatException e) {
-            System.out.println("El campo es alfanumérico");
+            List values = new LinkedList<>();
+            for (int i = 0; i < mat.length; i++) {
+                values.add(mat[i][n]);
+            }
+            Collections.sort(values);
+            System.out.println("Valor máximo del campo " + n + ": " + values.get(mat.length-1));
         }
     }
 
@@ -270,7 +278,12 @@ public class Complexity_Lab {
             }
             System.out.println("Valor mínimo del campo " + n + ": " + min);
         } catch (NumberFormatException e) {
-            System.out.println("El campo es alfanumérico");
+            List values = new LinkedList<>();
+            for (int i = 0; i < mat.length; i++) {
+                values.add(mat[i][n]);
+            }
+            Collections.sort(values);
+            System.out.println("Valor máximo del campo " + n + ": " + values.get(0));
         }
     }
 
