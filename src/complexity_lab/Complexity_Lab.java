@@ -6,6 +6,7 @@
 package complexity_lab;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -20,65 +21,99 @@ public class Complexity_Lab {
      */
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        System.out.println("Digite n");
+        System.out.println("Digite número de registros");
         int m = s.nextInt();
-        System.out.println("Digite número de campos");
+        System.out.println("Digite número de campos (adicionales al campo llave)");
         int n = s.nextInt();
-        int i = 0;
-        Object[][] mat = new Object[m][n];
+        int i = 0,l=0;
+        Object[][] mat = new Object[m][n + 1];
+        int []types = new int [n+1];
+        types[l]=0;
+        l+=1;
         BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
-        for (int j = 0; j < n; j++) {
-            System.out.println("Campo " + j);
-            System.out.println("Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
+        
+        for (int j = 1; j <= n; j++) {
+            System.out.println("➥ Campo " + j);
+            System.out.println("↳ Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
             int type = s.nextInt();
+            System.out.println("↳ Digite longitud");
+            int len = s.nextInt();
             switch (type) {
                 case 0:
                     for (int k = 0; k < m; k++) {
-
-                        mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(5)).subtract(one)), String.valueOf(one.multiply(ten.pow(4))));
-
+                        mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(len)).subtract(one)), String.valueOf(one.multiply(ten.pow(len - 1))));
                     }
-                    ;
+                    types[l] = 0;
+                    l+=1;
                     break;
                 case 1:  ;
-                    
+                    for (int k = 0; k < m; k++) {
+                        mat[k][j] = generateRandomText(len);
+                    }
+                    types[l] = 1;
+                    l+=1;
                     break;
                 default:
-                    System.out.println("Tipo inválido");
-                    ;
+                    System.out.println("Tipo inválido, se tomará como numérico");
+                    for (int k = 0; k < m; k++) {
+                        mat[k][j] = GenRandom(String.valueOf(one.multiply(ten.pow(len)).subtract(one)), String.valueOf(one.multiply(ten.pow(len - 1))));
+                    }
+                    types[l] = 0;
+                    l+=1;
                     break;
             }
         }
-
-        //System.out.println(generatePswd(50));
-        mat[i][0] = GenRandom(String.valueOf(one.multiply(ten.pow(5)).subtract(one)), String.valueOf(one.multiply(ten.pow(4))));
-        System.out.println(mat[i][0] + " " + mat[i][1]);
+        
+        
+        mat[i][0] = GenRandom(String.valueOf(one.multiply(ten.pow(50)).subtract(one)), String.valueOf(one.multiply(ten.pow(49))));
+        ShowRow(mat, i, n);
         i += 1;
-        while (i < m) {
-            big = GenRandom(String.valueOf(one.multiply(ten.pow(5)).subtract(one)), String.valueOf(one.multiply(ten.pow(4))));
+        while (i < m) { //Direccionamiento de llaves
+            big = GenRandom(String.valueOf(one.multiply(ten.pow(50)).subtract(one)), String.valueOf(one.multiply(ten.pow(49))));
             if (!Exists(mat, big, i)) {
                 mat[i][0] = big;
-                System.out.println(mat[i][0] + " " + mat[i][1]);
+                ShowRow(mat, i, n);
                 i += 1;
             }
+        }
+        
+        Sort(mat, m, n);
+        System.out.println("Matriz Ordenada");
+        for (int t = 0; t < m; t++) {
+            ShowRow(mat, t, n);
         }
 
     }
 
-    static char[] generatePswd(int len) {
-        String charsCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String Chars = "abcdefghijklmnopqrstuvwxyz";
-        String nums = "0123456789";
-        String symbols = "!@#$%^&*()_+-=.,/';:?><~*/-+";
-        String passSymbols = charsCaps + Chars + nums + symbols;
-        Random rnd = new Random();
-        char[] password = new char[len];
-
-        for (int i = 0; i < len; i++) {
-            password[i] = passSymbols.charAt(rnd.nextInt(passSymbols.length()));
+    public static void Sort(Object[][] mat, int m, int n) {
+        Object aux;
+        for (int i = 0; i < m - 1; i++) {
+            for (int j = 1; j < m; j++) {
+                BigInteger a = new BigInteger(String.valueOf(mat[i][0]));
+                BigInteger b = new BigInteger(String.valueOf(mat[j][0]));
+                if (a.compareTo(b) > 0) {
+                    for (int k = 0; k <= n; k++) {
+                        aux = mat[i][k];
+                        mat[i][k] = mat[j][k];
+                        mat[j][k] = aux;
+                    }
+                }
+            }
         }
-        return password;
+        
+    }
 
+    public static void ShowRow(Object[][] mat, int i, int n) {
+        for (int j = 0; j <= n; j++) {
+            System.out.print(mat[i][j] + " ");
+        }
+        System.out.println("");
+    }
+
+    public static String generateRandomText(int len) {
+        SecureRandom random = new SecureRandom();
+        String text = new BigInteger(len * 6, random).toString(32);
+        return text;
     }
 
     public static BigInteger GenRandom(String up, String low) {
