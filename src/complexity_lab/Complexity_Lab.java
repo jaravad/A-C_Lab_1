@@ -79,23 +79,20 @@ public class Complexity_Lab {
         Sort(mat, m, n);
         System.out.println("Matriz Ordenada");
         ShowMatrix(mat);
-//        for (int j = 0; j < l; j++) {
-//            System.out.print(types[j]+" ");
-//        }
-//        System.out.println("");
+
         boolean sw = false;
         while (sw == false) {
             System.out.println("Digite número de campo para buscar (0 = Campo clave)");
             num = s.nextInt();
             if (num <= n) {
-                
+
                 System.out.println("Digite dato a buscar");
                 Scanner ss = new Scanner(System.in);
                 String dat = ss.nextLine();
                 if (Search(dat, mat, num)) {
                     sw = true;
                 }
-                
+
             } else {
                 System.out.println("☹ Campo inválido, intente de nuevo");;
             }
@@ -135,6 +132,18 @@ public class Complexity_Lab {
                     System.out.println("☹ El campo digitado no es numérico");
                 }
 
+            } else {
+                System.out.println("☹ Campo inválido, intente de nuevo");;
+            }
+        }
+        
+        sw = false;
+        while(sw == false){
+            System.out.println("Digite número de campo para obtener moda");
+            num = s.nextInt();
+            if (num <= n) {
+                Moda(mat, num);
+                sw = true;
             } else {
                 System.out.println("☹ Campo inválido, intente de nuevo");;
             }
@@ -234,15 +243,19 @@ public class Complexity_Lab {
         return sw;
     }
 
-    public static boolean Exists(Object[][] vec, Object dat) {
-        boolean sw = false;
+    public static int Exists(Object[] vec, Object dat) {
+        
+        int index = -1, i = 0;
         for (Object x : vec) {
-            if (x.equals(dat)) {
-                sw = true;
-                break;
+            if (String.valueOf(x).equals(String.valueOf(dat))) {
+                index = i;
+                return index;
             }
+            i += 1;
+            
         }
-        return sw;
+        
+        return index;
     }
 
     public static void MaxValue(Object[][] mat, int n) {
@@ -262,7 +275,7 @@ public class Complexity_Lab {
                 values.add(mat[i][n]);
             }
             Collections.sort(values);
-            System.out.println("Valor máximo del campo " + n + ": " + values.get(mat.length-1));
+            System.out.println("Valor máximo del campo " + n + ": " + values.get(mat.length - 1));
         }
     }
 
@@ -287,14 +300,50 @@ public class Complexity_Lab {
         }
     }
 
-    private static void Average(Object[][] mat, int num) {
-            BigInteger sum = BigInteger.ZERO;
-            for (int i = 0; i < mat.length; i++) {
-                sum = sum.add(new BigInteger(String.valueOf(mat[i][num])));
+    public static void Moda(Object[][] mat, int n) {
+        int j = 0;
+        Object[] table = new Object[mat.length];
+        int[] frec = new int[mat.length];
+        for (int i = 0; i < mat.length; i++) {
+            if (i == 0) {
+                table[j] = mat[i][n];
+                frec[j] += 1;
+                j+=1;
+            } else {
+                if (Exists(table, mat[i][n]) != -1) {
+                    frec[Exists(table, mat[i][n])] += 1;
+                } else{
+                    table[j] = mat[i][n];
+                    frec[j] += 1;
+                    j+=1;
+                }
             }
-            DecimalFormat numberFormat = new DecimalFormat("#.00");
-            System.out.println("Promedio: " + numberFormat.format(sum.doubleValue() / new BigInteger(String.valueOf(mat.length)).doubleValue()));
-        
+        }
+        int max = frec[0];
+        int index = 0, i = 0;
+        for (int x : frec) {
+            if (x > max) {
+                max = x;
+                i=index;
+            }
+            index+=1;
+        }
+        if (max!=1) {
+            System.out.println("La moda del campo " +n+ " es el dato: "+table[i]+ ", se repite "+frec[i]+ " veces");
+        }else{
+            System.out.println("No hay moda");
+        }
+            
+    }
+
+    private static void Average(Object[][] mat, int num) {
+        BigInteger sum = BigInteger.ZERO;
+        for (int i = 0; i < mat.length; i++) {
+            sum = sum.add(new BigInteger(String.valueOf(mat[i][num])));
+        }
+        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        System.out.println("Promedio: " + numberFormat.format(sum.doubleValue() / new BigInteger(String.valueOf(mat.length)).doubleValue()));
+
     }
 
 }
