@@ -24,6 +24,7 @@ public class Complexity_Lab {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        long dirt, ordt, bust = 0, minmaxt = 0, promt = 0, modt = 0, startTime;
         Scanner s = new Scanner(System.in);
         System.out.println("Digite número de registros");
         int m = s.nextInt();
@@ -33,7 +34,7 @@ public class Complexity_Lab {
         Object[][] mat = new Object[m][n + 1];
 
         BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
-
+        startTime = System.nanoTime();
         for (int j = 1; j <= n; j++) {
             System.out.println("➥ Campo " + j);
             System.out.println("↳ Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
@@ -74,9 +75,11 @@ public class Complexity_Lab {
                 i += 1;
             }
         }
+        dirt = System.nanoTime() - startTime;
         ShowMatrix(mat);
-
+        startTime = System.nanoTime();
         Sort(mat, m, n);
+        ordt = System.nanoTime() - startTime;
         System.out.println("Matriz Ordenada");
         ShowMatrix(mat);
 
@@ -89,9 +92,11 @@ public class Complexity_Lab {
                 System.out.println("Digite dato a buscar");
                 Scanner ss = new Scanner(System.in);
                 String dat = ss.nextLine();
+                startTime = System.nanoTime();
                 if (Search(dat, mat, num)) {
                     sw = true;
                 }
+                bust = System.nanoTime() - startTime;
 
             } else {
                 System.out.println("☹ Campo inválido, intente de nuevo");;
@@ -108,10 +113,15 @@ public class Complexity_Lab {
                 sw = true;
                 switch (op) {
                     case 0:
+                        startTime = System.nanoTime();
                         MinValue(mat, num);
+                        minmaxt = System.nanoTime() - startTime;
                         break;
                     case 1:
+                        startTime = System.nanoTime();
                         MaxValue(mat, num);
+                        minmaxt = System.nanoTime() - startTime;
+                        break;
                 }
             } else if (num > n) {
                 System.out.println("☹ Campo inválido, intente de nuevo");
@@ -126,7 +136,9 @@ public class Complexity_Lab {
             num = s.nextInt();
             if (num <= n) {
                 try {
+                    startTime = System.nanoTime();
                     Average(mat, num);
+                    promt = System.nanoTime() - startTime;
                     sw = true;
                 } catch (NumberFormatException e) {
                     System.out.println("☹ El campo digitado no es numérico");
@@ -136,18 +148,27 @@ public class Complexity_Lab {
                 System.out.println("☹ Campo inválido, intente de nuevo");;
             }
         }
-        
+
         sw = false;
-        while(sw == false){
+        while (sw == false) {
             System.out.println("Digite número de campo para obtener moda");
             num = s.nextInt();
             if (num <= n) {
+                startTime = System.nanoTime();
                 Moda(mat, num);
+                modt = System.nanoTime() - startTime;
                 sw = true;
             } else {
                 System.out.println("☹ Campo inválido, intente de nuevo");;
             }
         }
+        System.out.println("Tiempos:");
+        System.out.println("› Tiempo de direccionamiento: "+dirt+ " ns");
+        System.out.println("› Tiempo de ordenamiento: "+ordt+ " ns");
+        System.out.println("› Tiempo de búsqueda: "+bust+ " ns");
+        System.out.println("› Tiempo para generar máximo o mínimo: "+minmaxt+ " ns");
+        System.out.println("› Tiempo para calcular el promedio: "+promt+ " ns");
+        System.out.println("› Tiempo para calcular la moda: "+modt+ " ns");
 
     }
 
@@ -244,7 +265,7 @@ public class Complexity_Lab {
     }
 
     public static int Exists(Object[] vec, Object dat) {
-        
+
         int index = -1, i = 0;
         for (Object x : vec) {
             if (String.valueOf(x).equals(String.valueOf(dat))) {
@@ -252,9 +273,9 @@ public class Complexity_Lab {
                 return index;
             }
             i += 1;
-            
+
         }
-        
+
         return index;
     }
 
@@ -308,14 +329,14 @@ public class Complexity_Lab {
             if (i == 0) {
                 table[j] = mat[i][n];
                 frec[j] += 1;
-                j+=1;
+                j += 1;
             } else {
                 if (Exists(table, mat[i][n]) != -1) {
                     frec[Exists(table, mat[i][n])] += 1;
-                } else{
+                } else {
                     table[j] = mat[i][n];
                     frec[j] += 1;
-                    j+=1;
+                    j += 1;
                 }
             }
         }
@@ -324,16 +345,16 @@ public class Complexity_Lab {
         for (int x : frec) {
             if (x > max) {
                 max = x;
-                i=index;
+                i = index;
             }
-            index+=1;
+            index += 1;
         }
-        if (max!=1) {
-            System.out.println("La moda del campo " +n+ " es el dato: "+table[i]+ ", se repite "+frec[i]+ " veces");
-        }else{
+        if (max != 1) {
+            System.out.println("La moda del campo " + n + " es el dato: " + table[i] + ", se repite " + frec[i] + " veces");
+        } else {
             System.out.println("No hay moda");
         }
-            
+
     }
 
     private static void Average(Object[][] mat, int num) {
