@@ -24,7 +24,7 @@ public class Complexity_Lab {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        long dirt, ordt, bust = 0, minmaxt = 0, promt = 0, modt = 0, startTime;
+        long dirt = 0, ordt, bust = 0, minmaxt = 0, promt = 0, modt = 0, startTime;
         Scanner s = new Scanner(System.in);
         System.out.println("Digite número de registros");
         int m = s.nextInt();
@@ -34,13 +34,14 @@ public class Complexity_Lab {
         Object[][] mat = new Object[m][n + 1];
 
         BigInteger big, ten = BigInteger.TEN, one = BigInteger.ONE;
-        startTime = System.nanoTime();
+        
         for (int j = 1; j <= n; j++) {
             System.out.println("➥ Campo " + j);
             System.out.println("↳ Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
             int type = s.nextInt();
             System.out.println("↳ Digite longitud");
             int len = s.nextInt();
+            startTime = System.nanoTime();
             switch (type) {
                 case 0:
                     for (int k = 0; k < m; k++) {
@@ -63,8 +64,9 @@ public class Complexity_Lab {
 
                     break;
             }
+            dirt = System.nanoTime() - startTime + dirt;
         }
-
+        startTime = System.nanoTime();
         mat[i][0] = GenRandom(String.valueOf(one.multiply(ten.pow(50)).subtract(one)), String.valueOf(one.multiply(ten.pow(49))));
 
         i += 1;
@@ -75,7 +77,8 @@ public class Complexity_Lab {
                 i += 1;
             }
         }
-        dirt = System.nanoTime() - startTime;
+        dirt = System.nanoTime() - startTime + dirt;
+        
         ShowMatrix(mat);
         startTime = System.nanoTime();
         Sort(mat, m, n);
