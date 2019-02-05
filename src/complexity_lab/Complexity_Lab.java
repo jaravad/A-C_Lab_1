@@ -25,6 +25,7 @@ public class Complexity_Lab {
      */
     public static void main(String[] args) {
         long dirt = 0, ordt, bust = 0, minmaxt = 0, promt = 0, modt = 0, startTime;
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         Scanner s = new Scanner(System.in);
         System.out.println("Digite número de registros");
         int m = s.nextInt();
@@ -37,7 +38,7 @@ public class Complexity_Lab {
         
         for (int j = 1; j <= n; j++) {
             System.out.println("➥ Campo " + j);
-            System.out.println("↳ Digite tipo de campo; 0 = Numérico, 1 = Alfanumérico");
+            System.out.println("↳ Digite tipo de campo; 0 = Numérico, 1 = Alfabético");
             int type = s.nextInt();
             System.out.println("↳ Digite longitud");
             int len = s.nextInt();
@@ -51,7 +52,7 @@ public class Complexity_Lab {
                     break;
                 case 1:  ;
                     for (int k = 0; k < m; k++) {
-                        mat[k][j] = generateRandomText(len).substring(0, len);
+                        mat[k][j] = RandomString(len, letters);
                     }
 
                     break;
@@ -88,11 +89,11 @@ public class Complexity_Lab {
 
         boolean sw = false;
         while (sw == false) {
-            System.out.println("Digite número de campo para buscar (0 = Campo clave)");
+            System.out.println("↳ Digite número de campo para buscar (0 = Campo clave)");
             num = s.nextInt();
             if (num <= n) {
 
-                System.out.println("Digite dato a buscar");
+                System.out.println("↳ Digite dato a buscar");
                 Scanner ss = new Scanner(System.in);
                 String dat = ss.nextLine();
                 startTime = System.nanoTime();
@@ -108,9 +109,9 @@ public class Complexity_Lab {
         }
         sw = false;
         while (sw == false) {
-            System.out.println("Digite número de campo para obtener valor máximo o mínimo");
+            System.out.println("↳ Digite número de campo para obtener valor máximo o mínimo");
             num = s.nextInt();
-            System.out.println("Digite que desea obtener; 0 = valor mínimo, 1 = valor máximo");
+            System.out.println("↳ Digite que desea obtener; 0 = valor mínimo, 1 = valor máximo");
             int op = s.nextInt();
             if (num <= n && op < 2) {
                 sw = true;
@@ -135,7 +136,7 @@ public class Complexity_Lab {
 
         sw = false;
         while (sw == false) {
-            System.out.println("Digite número de campo (numérico) para obtener promedio");
+            System.out.println("↳ Digite número de campo (numérico) para obtener promedio");
             num = s.nextInt();
             if (num <= n) {
                 try {
@@ -154,7 +155,7 @@ public class Complexity_Lab {
 
         sw = false;
         while (sw == false) {
-            System.out.println("Digite número de campo para obtener moda");
+            System.out.println("↳ Digite número de campo para obtener moda");
             num = s.nextInt();
             if (num <= n) {
                 startTime = System.nanoTime();
@@ -165,7 +166,8 @@ public class Complexity_Lab {
                 System.out.println("☹ Campo inválido, intente de nuevo");;
             }
         }
-        System.out.println("Tiempos:");
+        System.out.println("⏱ Tiempos ⏲");
+        System.out.println("");
         System.out.println("› Tiempo de direccionamiento: "+dirt+ " ns");
         System.out.println("› Tiempo de ordenamiento: "+ordt+ " ns");
         System.out.println("› Tiempo de búsqueda: "+bust+ " ns");
@@ -231,10 +233,15 @@ public class Complexity_Lab {
         System.out.println("");
     }
 
-    public static String generateRandomText(int len) {
-        SecureRandom random = new SecureRandom();
-        String text = new BigInteger(len * 6, random).toString(32);
-        return text;
+    public static String RandomString(int l, String letters) {
+        String s = new String();
+        Random rand = new Random();
+        int randomNum;
+        for (int i = 0; i < l; i++) {
+            randomNum = rand.nextInt((letters.length()-1 - 0) + 1) + 0;
+            s= s+letters.substring(randomNum, randomNum+1);
+        }
+        return s;
     }
 
     public static BigInteger GenRandom(String up, String low) {
