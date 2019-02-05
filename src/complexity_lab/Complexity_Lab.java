@@ -81,7 +81,7 @@ public class Complexity_Lab {
         
         ShowMatrix(mat);
         startTime = System.nanoTime();
-        Sort(mat, m, n);
+        Sort(mat);
         ordt = System.nanoTime() - startTime;
         System.out.println("Matriz Ordenada");
         ShowMatrix(mat);
@@ -199,14 +199,14 @@ public class Complexity_Lab {
 
     }
 
-    public static void Sort(Object[][] mat, int m, int n) {
+    public static void Sort(Object[][] mat) {
         Object aux;
-        for (int i = 0; i < m - 1; i++) {
-            for (int j = i + 1; j < m; j++) {
+        for (int i = 0; i < mat.length - 1; i++) {
+            for (int j = i + 1; j < mat.length; j++) {
                 BigInteger a = new BigInteger(String.valueOf(mat[i][0]));
                 BigInteger b = new BigInteger(String.valueOf(mat[j][0]));
                 if (a.compareTo(b) > 0) {
-                    for (int k = 0; k <= n; k++) {
+                    for (int k = 0; k <= mat[0].length-1; k++) {
                         aux = mat[i][k];
                         mat[i][k] = mat[j][k];
                         mat[j][k] = aux;
